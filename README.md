@@ -71,5 +71,36 @@ sudo apt-get install python3.6
 ```
 
 
+## Configuring Raspberry Pi 
 
+#### I. Installing MiNiFi:
+Install Java
+```
+sudo apt-get update
+sudo apt install openjdk-8-jdk
+```
+Install unzip
+```
+sudo apt install unzip
+```
+Install MiNiFi service:
+```
+wget https://downloads.apache.org/nifi/minifi/0.5.0/minifi-0.5.0-bin.zip
+unzip minifi-0.5.0-bin.zip
+cd minifi-0.5.0/
+sudo bin/minifi.sh install
+```
+Install MiNiFi toolbox:
+```
+cd ~
+wget https://downloads.apache.org/nifi/minifi/0.5.0/minifi-toolkit-0.5.0-bin.zip
+unzip minifi-toolkit-0.5.0-bin.zip
+```
+Run/stop minifi:
+```
+/bin/minifi.sh run	: to run on foreground
+/bin/minifi.sh {start|stop|run|restart|status|flowStatus|dump|install} : to run on background
+```
+Add a work flow:
+Add config.yml to minifi/conf and restart the minifi
 
