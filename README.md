@@ -1,5 +1,13 @@
 # 1-shot-IFC
-Single window to bring and integrate IoT, fog and cloud environment.
+Single window system to configure and deploy a data flow processors, excecution stacks such as Function as Service(FaaS) at Fog and Cloud enviornment. The main objective of the project is to develop a toolset that can configure the fog enviornment with cloud connection along with necessary softwares required for data driven excecution using various commands. 
+
+The system has the following components:
+
+Add- diagram 
+Write all the main components 
+
+##Command line tool should be main focus here-
+##Than try to add step by step configuration steps 
 
 
 ## Configuring cloud:
