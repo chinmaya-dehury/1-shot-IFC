@@ -85,12 +85,16 @@ sudo apt-get install python3.6
 #### IV. Adding NiFi Processors
 
 Five NiFi processors are used in cloud. ListenHTTP, three ReplaceText, and PutInfluxDB processors. Configuration of the processors are as follow.
+
+<figure>
+  <img src="images/cloud_nifi_processors.png">
+</figure>
 <br>
+
 ###### ListenHTTP Processor:
 ```
 Listening port: 8081
 ```
-<br>
 
 ###### ReplaceText 1 Processor:
 ```
@@ -98,7 +102,6 @@ Search Value: [{"} ]
 Replacement Value: Empty string set
 Replacement Strategy: Regex Replace
 ```
-<br>
 
 ###### ReplaceText 2 Processor:
 ```
@@ -106,7 +109,6 @@ Search Value: :
 Replacement Value: =
 Replacement Strategy: Regex Replace
 ```
-<br>
 
 ###### ReplaceText 3 Processor:
 ```
@@ -114,7 +116,6 @@ Search Value: (?s)(^.*$)
 Replacement Value: sensordata,location=room   (put a free space at the end)
 Replacement Strategy: Prepend
 ```
-<br>
 
 ###### PutInfluxDB Processor:
 ```
@@ -218,11 +219,91 @@ Then save the username and password
 
 Access the UI at:
 http://<ip_address>:8080
+<br><br>
+
+#### V. Deploying Serverless Function:
+
+Create a directory to place the functions:
+```
+mkdir serverless && cd serverless
+```
+Pull the templates of serverless functions consisting of different language interpreters:
+```
+sudo faas-cli template pull
+```
+Check the downloaded templates:
+```
+ls template
+```
+Create a new openfaas function:
+```
+faas-cli new datavalidation --lang python3
+```
+Copy the serverless funtion code from repository to datavalidation/handler.py file.
+
+Write the dependency packages to datavalidation/requirements.txt file:
+```
+nano datavalidation/requirements.txt
+```
+Add:
+		requests
+
+Build the function:
+```
+sudo faas-cli build -f datavalidation.yml
+```
+It builds the docker image and you see the image in docker images local repo.
+```
+sudo docker images | grep datavalidation 
+```
+Login openfaas:
+```
+faas-cli login --username <username> --password <password>
+```
+Deploy the function:
+```
+faas-cli deploy -f datavalidation.yml
+```
+The function is deployed and check-in running containers list:
+```
+sudo docker ps
+```
+<br><br>
+
+#### VI. Adding MiNiFi Processors:
+In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
+
+<figure>
+  <img src="images/fog_minifi_processors.png">
+</figure>
+
+<br>
+
+###### ListenHTTP Processor:
+```
+Listening Port: 8081
+```
+
+###### PostHTTP Processor:
+```
+URL: http://localhost:8080/function/datavalidation
+Use Chunked Encoding: false
+```
+#### NB! "Multipart Request Max Size" and "Multipart Read Buffer Size" properties do not exist in MiNiFi. So in order to run this template in MiNiFi, these two properties mus be deleted from the NiFi template manually before converting it to MiNiFi template.
 
 
 <br><br><br>
 
 ## Configuring IoT Raspberry Pi 
+<br>
+
+```
+cd ~
+mkdir one_shot_ifc
+mkdir one_shot_ifc/data_out
+cd one_shot_ifc
+```
+Copy "get_sensor_data.py" file from repository to this directory.
 <br>
 
 #### I. Installing MiNiFi:
@@ -257,3 +338,21 @@ Add a work flow:
 Add config.yml to minifi/conf and restart the minifi
 <br><br>
 
+#### II. Adding MiNiFi Processors:
+In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
+<figure>
+  <img src="images/iot_minifi_processors.png">
+</figure>
+<br>
+
+###### GetFile Processor:
+```
+Input Directory: /home/pi/one_shot_ifc/data-out
+```
+
+###### PostHTTP Processor:
+```
+URL: http://<Fog Node IP Address>:8081/contentListener
+Use Chunked Encoding: false
+```
+#### NB! "Multipart Request Max Size" and "Multipart Read Buffer Size" properties do not exist in MiNiFi. So in order to run this template in MiNiFi, these two properties mus be deleted from the NiFi template manually before converting it to MiNiFi template.
