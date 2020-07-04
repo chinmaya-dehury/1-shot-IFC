@@ -85,7 +85,12 @@ sudo apt-get install python3.6
 #### IV. Adding NiFi Processors
 
 Five NiFi processors are used in cloud. ListenHTTP, three ReplaceText, and PutInfluxDB processors. Configuration of the processors are as follow.
+
+<figure>
+  <img src="images/cloud_nifi_processors.png">
+</figure>
 <br>
+
 ###### ListenHTTP Processor:
 ```
 Listening port: 8081
@@ -267,7 +272,13 @@ sudo docker ps
 
 #### VI. Adding MiNiFi Processors:
 In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
+
+<figure>
+  <img src="images/fog_minifi_processors.png">
+</figure>
+
 <br>
+
 ###### ListenHTTP Processor:
 ```
 Listening Port: 8081
@@ -329,6 +340,9 @@ Add config.yml to minifi/conf and restart the minifi
 
 #### II. Adding MiNiFi Processors:
 In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
+<figure>
+  <img src="images/iot_minifi_processors.png">
+</figure>
 <br>
 
 ###### GetFile Processor:
