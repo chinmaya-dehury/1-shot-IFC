@@ -80,7 +80,47 @@ To access NiFi web interface, you can direct your browser to the following addre
 sudo apt-get update
 sudo apt-get install python3.6
 ```
+<br><br>
 
+#### IV. Adding NiFi Processors
+
+Five NiFi processors are used in cloud. ListenHTTP, three ReplaceText, and PutInfluxDB processors. Configuration of the processors are as follow.
+<br>
+###### ListenHTTP Processor:
+```
+Listening port: 8081
+```
+<br>
+
+###### ReplaceText 1 Processor:
+```
+Search Value: [{"} ]
+Replacement Value: Empty string set
+Replacement Strategy: Regex Replace
+```
+<br>
+
+###### ReplaceText 2 Processor:
+```
+Search Value: :
+Replacement Value: =
+Replacement Strategy: Regex Replace
+```
+<br>
+
+###### ReplaceText 3 Processor:
+```
+Search Value: (?s)(^.*$)
+Replacement Value: sensordata,location=room   (put a free space at the end)
+Replacement Strategy: Prepend
+```
+<br>
+
+###### PutInfluxDB Processor:
+```
+Database Name: iot
+InfluxDB connection URL: http://<DataBase IP Address>:8086
+```
 <br><br><br>
 
 ## Configuring Fog Raspberry Pi
