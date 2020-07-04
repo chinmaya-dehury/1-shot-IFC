@@ -318,3 +318,18 @@ Add a work flow:
 Add config.yml to minifi/conf and restart the minifi
 <br><br>
 
+#### I. Adding MiNiFi Processors:
+In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
+<br>
+
+###### GetFile Processor:
+```
+Input Directory: /home/pi/one_shot_ifc/data-out
+```
+
+###### PostHTTP Processor:
+```
+URL: http://<Fog Node IP Address>:8081/contentListener
+Use Chunked Encoding: false
+```
+#### NB! "Multipart Request Max Size" and "Multipart Read Buffer Size" properties do not exist in MiNiFi. So in order to run this template in MiNiFi, these two properties mus be deleted from the NiFi template manually before converting it to MiNiFi template.
