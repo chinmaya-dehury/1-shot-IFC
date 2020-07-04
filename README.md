@@ -327,7 +327,7 @@ Add a work flow:
 Add config.yml to minifi/conf and restart the minifi
 <br><br>
 
-#### I. Adding MiNiFi Processors:
+#### II. Adding MiNiFi Processors:
 In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
 <br>
 
