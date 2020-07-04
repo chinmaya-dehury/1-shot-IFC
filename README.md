@@ -90,7 +90,6 @@ Five NiFi processors are used in cloud. ListenHTTP, three ReplaceText, and PutIn
 ```
 Listening port: 8081
 ```
-<br>
 
 ###### ReplaceText 1 Processor:
 ```
@@ -98,7 +97,6 @@ Search Value: [{"} ]
 Replacement Value: Empty string set
 Replacement Strategy: Regex Replace
 ```
-<br>
 
 ###### ReplaceText 2 Processor:
 ```
@@ -106,7 +104,6 @@ Search Value: :
 Replacement Value: =
 Replacement Strategy: Regex Replace
 ```
-<br>
 
 ###### ReplaceText 3 Processor:
 ```
@@ -114,7 +111,6 @@ Search Value: (?s)(^.*$)
 Replacement Value: sensordata,location=room   (put a free space at the end)
 Replacement Strategy: Prepend
 ```
-<br>
 
 ###### PutInfluxDB Processor:
 ```
@@ -218,6 +214,71 @@ Then save the username and password
 
 Access the UI at:
 http://<ip_address>:8080
+<br><br>
+
+#### V. Deploying Serverless Function:
+
+Create a directory to place the functions:
+```
+mkdir serverless && cd serverless
+```
+Pull the templates of serverless functions consisting of different language interpreters:
+```
+sudo faas-cli template pull
+```
+Check the downloaded templates:
+```
+ls template
+```
+Create a new openfaas function:
+```
+faas-cli new datavalidation --lang python3
+```
+Copy the serverless funtion code from repository to datavalidation/handler.py file.
+
+Write the dependency packages to datavalidation/requirements.txt file:
+```
+nano datavalidation/requirements.txt
+```
+Add:
+		requests
+
+Build the function:
+```
+sudo faas-cli build -f datavalidation.yml
+```
+It builds the docker image and you see the image in docker images local repo.
+```
+sudo docker images | grep datavalidation 
+```
+Login openfaas:
+```
+faas-cli login --username <username> --password <password>
+```
+Deploy the function:
+```
+faas-cli deploy -f datavalidation.yml
+```
+The function is deployed and check-in running containers list:
+```
+sudo docker ps
+```
+<br><br>
+
+#### VI. Adding MiNiFi Processors:
+In order to add processors to MiNiFi, processors should be designed in NiFi and then NiFi template should be converted to MiNiFi template. Then MiNiFi template can be added to config directory of MiNiFi.
+<br>
+###### ListenHTTP Processor:
+```
+Listening Port: 8081
+```
+
+###### PostHTTP Processor:
+```
+URL: http://localhost:8080/function/datavalidation
+Use Chunked Encoding: false
+```
+#### NB! "Multipart Request Max Size" and "Multipart Read Buffer Size" properties do not exist in MiNiFi. So in order to run this template in MiNiFi, these two properties mus be deleted from the NiFi template manually before converting it to MiNiFi template.
 
 
 <br><br><br>
