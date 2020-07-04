@@ -286,6 +286,15 @@ Use Chunked Encoding: false
 ## Configuring IoT Raspberry Pi 
 <br>
 
+```
+cd ~
+mkdir one_shot_ifc
+mkdir one_shot_ifc/data_out
+cd one_shot_ifc
+```
+Copy "get_sensor_data.py" file from repository to this directory.
+<br>
+
 #### I. Installing MiNiFi:
 Install Java
 ```
