@@ -1,5 +1,5 @@
 # 1-shot-IFC
-Single window system to configure and deploy a data flow processors, excecution stacks such as Function as Service(FaaS) at Fog and Cloud enviornment. The main objective of the project is to develop a toolset that can configure the fog enviornment with cloud connection along with necessary softwares required for data driven excecution using various commands. 
+Single window system to configure and deploy data flow processors, execution stacks such as Function as Service(FaaS) at Fog and Cloud environment. The main objective of the project is to develop a toolset that can configure the fog environment with cloud connection along with necessary softwares required for data driven execution using various commands. 
 
 The system has the following components:
 
